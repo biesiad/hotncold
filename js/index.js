@@ -4,29 +4,56 @@ $.domReady(function () {
 
 var app = {
     init: function () {
+        if (!navigator.geolocation) {
+            $('#app').text('No Geolocation, sorry&hellip; :(');
+            return;
+        }
+
         var el = $('<div id="form">'),
-            lat = $('<input type="text" id="lat" value="50">'),
-            lon = $('<input type="text" id="lon" value="19">'),
-            btn = $('<input type="button" id="track" value="track">');
+            lat = $('<input type="text" id="lat" value="50.081023" placeholder="latitude">'),
+            lon = $('<input type="text" id="lon" value="19.921245" placeholder="longitude">'),
+            track = $('<input type="button" id="track" value="track">'),
+            useCurrentPosition = $('<input type="button" id="use_current" value="use current">');
+
         el.append(lat);
         el.append(lon);
-        el.append(btn);
+        el.append(track);
+        el.append(useCurrentPosition);
         $('#app').append(el);
 
-        btn.click(function () {
+        track.click(function () {
             app.target = new LatLon($('#lat').val(), $('#lon').val());
             app.startTracking();
+        });
+
+        useCurrentPosition.click(function () {
+            app.getPosition(function (position) {
+                lat.val(""+position.coords.latitude);
+                lon.val(""+position.coords.longitude);
+            });
         });
     },
 
     startTracking: function () {
-        if (navigator.geolocation) {
-            if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
-            navigator.geolocation.getCurrentPosition(this.onPositionChange, this.onPositionChangeError, { enableHighAccuracy: true });
-            this.watchId = navigator.geolocation.watchPosition(this.onPositionChange, this.onPositionChangeError, { enableHighAccuracy: true });
-        } else {
-            $('#app').text('No Geolocation, sorry&hellip; :(');
-        }
+        this.getPosition(this.onPositionChange);
+        this.watchId = navigator.geolocation.watchPosition(
+            this.onPositionChange, 
+            this.onPositionChangeError, 
+            { 
+                enableHighAccuracy: true,
+                timeout: 5000
+            });
+    },
+
+    getPosition: function(onPosition) {
+        if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
+        navigator.geolocation.getCurrentPosition(
+            onPosition, 
+            this.onPositionChangeError, 
+            { 
+                enableHighAccuracy: true,
+                timeout: 5000
+            });
     },
     
     onPositionChange: function (position) {
@@ -36,7 +63,7 @@ var app = {
 
     onPositionChangeError: function () {
         console.log(arguments);
-        this.flash('#f00');
+        app.flash('#f00');
     },
 
     updatePosition: function (position) {
@@ -54,17 +81,21 @@ var app = {
 
     render: function () {
         $('#data').remove();
-        var el = $('<div id="data">');
+        var el = $('<div id="data">'),
+            color = this.toTargetDelta > 0 ? '#0f0' : '#f00';
         el.append(this.createP("target lat: " + this.target.lat()));
         el.append(this.createP("target lon: " + this.target.lon()));
         el.append(this.createP("lat: " + this.position.lat()));
         el.append(this.createP("lon: " + this.position.lon()));
         el.append(this.createP("latDelta: " + this.latitudeDelta));
         el.append(this.createP("lonDelta: " + this.longitudeDelta));
-        el.append(this.createP("toTarget: " + this.toTarget));
-        el.append(this.createP("toTargetDelta: " + this.toTargetDelta));
+        el.append(this.createP("toTarget: " + this.toTarget*1000 + ' m'));
+        targetDelta = this.createP("toTargetDelta: " + this.toTargetDelta*1000 + ' m');
+        targetDelta.css('color', color);
+        el.append(targetDelta);
+        
         $('#app').append(el);
-        this.flash('#ffe');
+        app.flash('#ffa');
     },
     
     createP: function (text) {
@@ -73,6 +104,6 @@ var app = {
 
     flash: function (color) {
         $(document.body).css('background-color', color);
-        setTimeout(function () { $(document.body).css('background-color', '#fff'); }, 100);
+        setTimeout(function () { $(document.body).css('background-color', '#fff'); }, 200);
     }
 };
