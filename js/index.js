@@ -44,7 +44,7 @@ var app = {
         this.position = new LatLon(pos.latitude, pos.longitude); 
         this.latitudeDelta = pos.latitude - (+localStorage.getItem('latitude') || 0);
         this.longitudeDelta = pos.longitude - (+localStorage.getItem('longitude') || 0);
-        this.toTarget = this.target.distanceTo(this.position);
+        this.toTarget = this.target.distanceTo(this.position, 10);
         this.toTargetDelta = this.toTarget - (+localStorage.getItem('toTarget') || 0);
 
         localStorage.setItem('latitude', pos.latitude);
