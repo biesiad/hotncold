@@ -1,27 +1,49 @@
-var homeView = {
+var app = {
     init: function () {
+        if (true) {
+            home.next = map.init;
+            map.next = play.init;
+            home.init();
+        } else {
+            var pos = query.split('|');
+            geo.target = new google.maps.LatLng(+pos[0], +pos[1]);
+            play.init();
+        }
+    }
+};
+var home = {
+    init: function () {
+        var self = this;
         $('#start').click(function () {
-            markView.init();
+            self.next();
+            return false;
         });
     }
 };
 
-var markView = {
+var map = {
     init: function () {
-        var self = this;
-        $('#app').load('mark.html', function () {
-            geo.getPosition(function (position) {
-                $('#lat').val(position.coords.latitude);
-                $('#lon').val(position.coords.longitude);
-                self.initMap(position);
-            });
-            $('#track').click(function () {
-                self.updateMarker(); 
-                compassView.init();
-            });
+        var self = map;
+        $('#app').html(
+            '<div class="map box-input"> \
+              <div id="map"> \
+              </div> \
+            </div> \
+            <a href="#" id="track" class="button">track</a>');
+
+        geo.getPosition(function (position) {
+            self.initMap(position);
+        });
+        $('#track').click(function () {
+            self.updateMarker(); 
+            self.next();
+            return false;
         });
     },
     initMap: function (position) {
+        var mapWidth = $('#map').width();
+        $('#map').parent().height(mapWidth);
+        $('#map').height(mapWidth);
         var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         var myOptions = {
                 zoom: 16,
@@ -42,49 +64,75 @@ var markView = {
         google.maps.event.addListener(this.map, 'dragend', this.updateMarker);
     },
     updateMarker: function () {
-        var position = markView.map.getCenter(); 
-        var lat = position.lat();
-        var lon = position.lng();
-        $('#lat').val(lat);
-        $('#lon').val(lon);
-        geo.target = new LatLon(lat, lon);
+        var position = map.map.getCenter();
+        geo.target = new LatLon(position.lat(), position.lng());
     }
 };
 
-var compassView = {
+var links = {
     init: function () {
-        var self = this;
-       $('#app').load('compass.html', function () {
-           geo.watchPosition(self.onPosition);
-       }); 
+        var link = 'http://localhost/~grzech/playhotncold?' + geo.target.lat() + '|' + geo.target.lon();
+        $('#app').html(
+            '<div class="box"> \
+               <p>Share this link with your friend and wish him luck :)</p> \
+               <a href="" id="play_link"></a> \
+               <a href="https://twitter.com/share" class="twitter-share-button" data-url="abc" data-text="' + link + '#playhnc" data-count="none">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script> \
+             </div>');
+        $('#play_link').text('http://costam/' + geo.target.lat());
+    }
+};
+
+var play = {
+    init: function () {
+        var self = play;
+        $('#app').html(
+            '<div class="compass box"> \
+              <p id="direction">Are you moving?</p> \
+              <p id="to_target"></p> \
+            </div> \
+            <p id="accuracy"></p>');
+       geo.watchPosition(self.onPosition);
     },
     onPosition: function (position) {
         var pos = position.coords;
         var currentPosition = new LatLon(pos.latitude, pos.longitude);
         var toTarget = geo.target.distanceTo(currentPosition, 10);
+        if (toTarget * 1000 < 10) {
+            geo.clearWatch();
+            if (play.isMovingId) { clearTimeout(play.isMoving); }
+            $('#direction').text('You Are There!').removeClass().addClass('success');
+            return;
+        }
+
         var toTargetDelta = localStorage.getItem('toTarget') ? (toTarget - localStorage.getItem('toTarget')) : 0;
         if (toTargetDelta === 0) {
             $('#direction').text('Are you moving?').removeClass().addClass('stop');
         } else if (toTargetDelta > 0) {
-            $('#direction').text('Colder').removeClass().addClass('cold');
+            $('#direction').text('Cold').removeClass().addClass('cold');
         } else {
-            $('#direction').text('Hoter').removeClass().addClass('hot');
+            $('#direction').text('Hot').removeClass().addClass('hot');
         }
 
         var el = $('<div>');
-        el.append('<p>latitude: ' + pos.latitude + '</p>');
-        el.append('<p>longitude: ' + pos.longitude + '</p>');
-        el.append('<p>altitude: ' + pos.altitude + '</p>');
-        el.append('<p>accuracy: ' + pos.accuracy + '</p>');
-        el.append('<p>heading: ' + pos.heading + '</p>');
-        el.append('<p>speed: ' + pos.speed + '</p>');
         el.append('<p>' + ~~(toTarget*1000) + 'm to target</p>');
         $('#to_target').html(el);
+        $('#accuracy').html('accuracy: ' + pos.accuracy + 'm');
 
-        localStorage.setItem('latitude', pos.latitude);
-        localStorage.setItem('longitude', pos.longitude);
         localStorage.setItem('toTarget', toTarget);
-        flash('#0f0');
+        play.flash('#f6f3e6');
+        play.isMoving();
+    },
+    isMoving: function () {
+        if (play.isMovingId) { clearTimeout(play.isMoving); }
+        play.isMovingId = setTimeout(function () {
+            $('#direction').text('Are you moving?').removeClass().addClass('stop');
+            play.isMoving();
+        }, 5000);
+    },
+    flash: function (color) {
+        var oldColor = $('.compass').css('background-color');
+        $('.compass').css('background-color', color);
+        setTimeout(function () { $('.compass').css('background-color', oldColor); }, 200);
     }
 };
 
@@ -99,33 +147,14 @@ var geo = {
         if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
         this.watchId = navigator.geolocation.watchPosition(onPosition, this.onPositionError, { enableHighAccuracy: true, maximumAge: 0 });
     },
+    clearWatch: function () {
+        if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
+    },
     onPositionError: function () {
         console.log('position error: ' + arguments);
-        flash('#f00');
     }
 };
 
-
 $(function () { 
-    homeView.init(); 
+    app.init(); 
 });
-
-// updatePosition: function (position) {
-//     var pos = position.coords;
-//     this.position = new LatLon(pos.latitude, pos.longitude); 
-//     this.latitudeDelta = pos.latitude - (+localStorage.getItem('latitude') || 0);
-//     this.longitudeDelta = pos.longitude - (+localStorage.getItem('longitude') || 0);
-//     this.toTarget = this.target.distanceTo(this.position, 10);
-//     this.toTargetDelta = this.toTarget - (+localStorage.getItem('toTarget') || 0);
-// 
-//     localStorage.setItem('latitude', pos.latitude);
-//     localStorage.setItem('longitude', pos.longitude);
-//     localStorage.setItem('toTarget', this.toTarget);
-// },
-// 
-
-function flash(color) {
-    var oldColor = $(document.body).css('background-color');
-    $(document.body).css('background-color', color);
-    setTimeout(function () { $(document.body).css('background-color', oldColor); }, 200);
-}
