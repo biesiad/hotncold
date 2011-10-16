@@ -180,20 +180,23 @@ input::-moz-placeholder {
     content: url('../images/compass_success.png');
 }
 
-.compass #accuracy {
+.compass #direction {
     margin-bottom: 40px;
     font-size: 50px;
     font-weight: bold;
     text-transform: uppercase;
     font-family: "Francois One", sans-serif;
 }
-.compass #accuracy .hot {
+.compass #direction .cold {
+    color: blue;
+}
+.compass #direction .hot {
     color: red;
 }
-.compass #accuracy .stop {
+.compass #direction .stop {
     color: yellow;
 }
-.compass #accuracy .success {
+.compass #direction .success {
     color: green;
 }
 

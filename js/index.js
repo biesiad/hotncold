@@ -59,10 +59,31 @@ var compassView = {
        }); 
     },
     onPosition: function (position) {
-        var currentPosition = new LatLon(position.coords.latitude, position.coords.longitude);
-        var toTarget = geo.target.distanceTo(currentPosition);
-        $('#to_target').text((toTarget * 1000) + "m to target");
-        console.log(toTarget);
+        var pos = position.coords;
+        var currentPosition = new LatLon(pos.latitude, pos.longitude);
+        var toTarget = geo.target.distanceTo(currentPosition, 10);
+        var toTargetDelta = localStorage.getItem('toTarget') ? (toTarget - localStorage.getItem('toTarget')) : 0;
+        if (toTargetDelta === 0) {
+            $('#direction').text('Are you moving?').removeClass().addClass('stop');
+        } else if (toTargetDelta > 0) {
+            $('#direction').text('Colder').removeClass().addClass('cold');
+        } else {
+            $('#direction').text('Hoter').removeClass().addClass('hot');
+        }
+
+        var el = $('<div>');
+        el.append('<p>latitude: ' + pos.latitude + '</p>');
+        el.append('<p>longitude: ' + pos.longitude + '</p>');
+        el.append('<p>altitude: ' + pos.altitude + '</p>');
+        el.append('<p>accuracy: ' + pos.accuracy + '</p>');
+        el.append('<p>heading: ' + pos.heading + '</p>');
+        el.append('<p>speed: ' + pos.speed + '</p>');
+        el.append('<p>' + ~~(toTarget*1000) + 'm to target</p>');
+        $('#to_target').html(el);
+
+        localStorage.setItem('latitude', pos.latitude);
+        localStorage.setItem('longitude', pos.longitude);
+        localStorage.setItem('toTarget', toTarget);
         flash('#0f0');
     }
 };
@@ -72,14 +93,15 @@ var geo = {
         // if watchPosition active, getCurrentPosition will not respond
         // clearing watch first
         if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
-        navigator.geolocation.getCurrentPosition(onPosition, this.onPositionChangeError, { enableHighAccuracy: true });
+        navigator.geolocation.getCurrentPosition(onPosition, this.onPositionChangeError, { enableHighAccuracy: true, maximumAge: 0 });
     },
     watchPosition: function(onPosition) {
         if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
-        this.watchId = navigator.geolocation.watchPosition(onPosition, this.onPositionError, { enableHighAccuracy: true });
+        this.watchId = navigator.geolocation.watchPosition(onPosition, this.onPositionError, { enableHighAccuracy: true, maximumAge: 0 });
     },
     onPositionError: function () {
         console.log('position error: ' + arguments);
+        flash('#f00');
     }
 };
 
@@ -88,24 +110,6 @@ $(function () {
     homeView.init(); 
 });
 
-// startTracking: function () {
-//     this.getPosition(this.onPositionChange);
-//     this.watchId = navigator.geolocation.watchPosition(
-//         this.onPositionChange, 
-//         this.onPositionChangeError, 
-//         { enableHighAccuracy: true });
-// },
-// 
-// onPositionChange: function (position) {
-//     app.updatePosition(position);
-// //         app.render();
-// },
-// 
-// onPositionChangeError: function () {
-//     console.log(arguments);
-//     app.flash('#f00');
-// },
-// 
 // updatePosition: function (position) {
 //     var pos = position.coords;
 //     this.position = new LatLon(pos.latitude, pos.longitude); 
