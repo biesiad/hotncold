@@ -14,9 +14,9 @@ var markView = {
                 $('#lat').val(position.coords.latitude);
                 $('#lon').val(position.coords.longitude);
                 self.initMap(position);
-                geo.target = new LatLon(position.coords.latitude, position.coords.longitude);
             });
             $('#track').click(function () {
+                self.updateMarker(); 
                 compassView.init();
             });
         });
@@ -43,8 +43,11 @@ var markView = {
     },
     updateMarker: function () {
         var position = markView.map.getCenter(); 
-        $('#lat').val(position.lat());
-        $('#lon').val(position.lng());
+        var lat = position.lat();
+        var lon = position.lng();
+        $('#lat').val(lat);
+        $('#lon').val(lon);
+        geo.target = new LatLon(lat, lon);
     }
 };
 
@@ -58,7 +61,7 @@ var compassView = {
     onPosition: function (position) {
         var currentPosition = new LatLon(position.coords.latitude, position.coords.longitude);
         var toTarget = geo.target.distanceTo(currentPosition);
-        $('#to_target').text(toTarget*1000 + "m to target");
+        $('#to_target').text((toTarget * 1000) + "m to target");
         console.log(toTarget);
         flash('#0f0');
     }
