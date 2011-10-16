@@ -82,9 +82,9 @@ input::-moz-placeholder {
     background: #E74E51;
     padding: 10px 0;
     font-family: "Francois One", sans-serif;
-    -webkit-box-shadow: 0 10px 0 rgba(255, 0, 0, 0.1);
-    -moz-box-shadow: 0 10px 0 rgba(255, 0, 0, 0.1);
-    box-shadow: 0 10px 0 rgba(255, 0, 0, 0.1);
+    -webkit-box-shadow: 0 10px 0 rgba(255, 0, 0, .1);
+    -moz-box-shadow: 0 10px 0 rgba(255, 0, 0, .1);
+    box-shadow: 0 10px 0 rgba(255, 0, 0, .1);
 }
 .top a {
     margin-right: 1em;
@@ -165,12 +165,39 @@ input::-moz-placeholder {
 
 }
 .compass .icon {
-    margin: 0 auto;
     width: 50%;
-    height: 50px;
+    margin: 0 auto;
     margin-bottom: 20px;
-    border: 1px solid #eee;
+    content: url('../images/compass.png');
 }
+.compass .icon .hot {
+    content: url('../images/compass_hot.png');
+}
+.compass .icon .stop {
+    content: url('../images/compass_stop.png');
+}
+.compass .icon .success {
+    content: url('../images/compass_success.png');
+}
+
+.compass #accuracy {
+    margin-bottom: 40px;
+    font-size: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: "Francois One", sans-serif;
+}
+.compass #accuracy .hot {
+    color: red;
+}
+.compass #accuracy .stop {
+    color: yellow;
+}
+.compass #accuracy .success {
+    color: green;
+}
+
+
 
 .link {
     display: block;

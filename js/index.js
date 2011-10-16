@@ -1,12 +1,12 @@
-var home = {
+var homeView = {
     init: function () {
         $('#start').click(function () {
-            mark.init();
+            markView.init();
         });
     }
 };
 
-var mark = {
+var markView = {
     init: function () {
         var self = this;
         $('#app').load('mark.html', function () {
@@ -14,10 +14,10 @@ var mark = {
                 $('#lat').val(position.coords.latitude);
                 $('#lon').val(position.coords.longitude);
                 self.initMap(position);
-                geo.target = new LatLon(position.coords.latitude-1, position.coords.longitude-1);
+                geo.target = new LatLon(position.coords.latitude, position.coords.longitude);
             });
             $('#track').click(function () {
-                compass.init();
+                compassView.init();
             });
         });
     },
@@ -28,36 +28,46 @@ var mark = {
                 center: latlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-        var map = new google.maps.Map(document.getElementById("map"), myOptions);
+        this.map = new google.maps.Map(document.getElementById("map"), myOptions);
+        var crosshairShape = {
+            coords:[0,0,20,20],
+            type:'rect'
+        };
+        var marker = new google.maps.Marker({
+            map: this.map,
+            icon: 'http://www.daftlogic.com/images/cross-hairs.gif',
+            shape: crosshairShape
+        });
+        marker.bindTo('position', this.map, 'center'); 
+        google.maps.event.addListener(this.map, 'dragend', this.updateMarker);
+    },
+    updateMarker: function () {
+        var position = markView.map.getCenter(); 
+        $('#lat').val(position.lat());
+        $('#lon').val(position.lng());
     }
 };
 
-var links = {
+var compassView = {
     init: function () {
-        $('#app').load('links.html');    
-    }
-};
-
-var track = {
-    init: function () {
-        $('#app').load('track.html');
-    }
-};
-
-var compass = {
-    init: function () {
-       $('#app').load('compass.html'); 
-       geo.watchPosition(this.onPosition);
+        var self = this;
+       $('#app').load('compass.html', function () {
+           geo.watchPosition(self.onPosition);
+       }); 
     },
     onPosition: function (position) {
         var currentPosition = new LatLon(position.coords.latitude, position.coords.longitude);
         var toTarget = geo.target.distanceTo(currentPosition);
         $('#to_target').text(toTarget*1000 + "m to target");
+        console.log(toTarget);
+        flash('#0f0');
     }
 };
 
 var geo = {
     getPosition: function(onPosition) {
+        // if watchPosition active, getCurrentPosition will not respond
+        // clearing watch first
         if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
         navigator.geolocation.getCurrentPosition(onPosition, this.onPositionChangeError, { enableHighAccuracy: true });
     },
@@ -72,7 +82,7 @@ var geo = {
 
 
 $(function () { 
-    home.init(); 
+    homeView.init(); 
 });
 
 // startTracking: function () {
@@ -82,7 +92,6 @@ $(function () {
 //         this.onPositionChangeError, 
 //         { enableHighAccuracy: true });
 // },
-// 
 // 
 // onPositionChange: function (position) {
 //     app.updatePosition(position);
@@ -107,7 +116,9 @@ $(function () {
 //     localStorage.setItem('toTarget', this.toTarget);
 // },
 // 
-// flash: function (color) {
-//     $(document.body).css('background-color', color);
-//     setTimeout(function () { $(document.body).css('background-color', '#fff'); }, 200);
-// }
+
+function flash(color) {
+    var oldColor = $(document.body).css('background-color');
+    $(document.body).css('background-color', color);
+    setTimeout(function () { $(document.body).css('background-color', oldColor); }, 200);
+}
