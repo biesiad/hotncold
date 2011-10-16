@@ -90,24 +90,32 @@ li {
     padding: 20px 0;
     text-align: center;
     margin-bottom: 30px;
+    font-family: "Lobster", serif;
+    font-size: 50px;
+    display: block;
+/*    -webkit-text-shadow: 3px 3px 0 #DEDACB;
+    -moz-text-shadow: 3px 3px 0 #DEDACB;
+    text-shadow: 3px 3px 0 #DEDACB;*/
     -webkit-border-radius: 0 0 10px 10px !important;
     -moz-border-radius: 0 0 10px 10px !important;
     border-radius: 0 0 10px 10px !important;
 }
-.logo {
-    font-family: "Lobster", serif;
-    font-size: 50px;
-    display: block;
-    -webkit-text-shadow: 5px 5px 0 #DEDACB;
-    -moz-text-shadow: 5px 5px 0 #DEDACB;
-    text-shadow: 5px 5px 0 #DEDACB;
+.logo img {
+    width: 50%;
+    height: auto;
+    margin: 0 auto;
 }
-.logo > .hot {
+.logo h1 {
+    text-indent: -99999em;
+    height: 0;
+}
+
+/*.logo > .hot {
     color: #E6242B;
 }
 .logo > .cold {
     color: #26A4BD;
-}
+}*/
 
 .info {
     margin-bottom: 30px;
