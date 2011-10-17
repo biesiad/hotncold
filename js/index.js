@@ -1,14 +1,25 @@
 var app = {
     init: function () {
-        if (true) {
-            home.next = map.init;
-            map.next = play.init;
-            home.init();
-        } else {
-            var pos = query.split('|');
-            geo.target = new google.maps.LatLng(+pos[0], +pos[1]);
+        // if params query then play view
+        var params = this.parseQuery(location.search);
+        if (params.lat && params.lon) {
+            geo.target = new LatLon(params.lat, params.lon);
             play.init();
+        } else {
+            home.next = map.init;
+            map.next = share.init;
+            home.init();
         }
+    },
+    parseQuery: function (params) {
+        var position = params.replace(/[^=\d\.&\w]/g, "").split('&'),
+            param, paramsObject = {};
+
+        for (var i = 0; i < position.length; i++) {
+            param = position[i].split('=');
+            paramsObject[param[0]] = +param[1];
+        }
+        return paramsObject;
     }
 };
 var home = {
@@ -69,16 +80,20 @@ var map = {
     }
 };
 
-var links = {
+var share = {
     init: function () {
-        var link = 'http://localhost/~grzech/playhotncold?' + geo.target.lat() + '|' + geo.target.lon();
-        $('#app').html(
-            '<div class="box"> \
-               <p>Share this link with your friend and wish him luck :)</p> \
-               <a href="" id="play_link"></a> \
-               <a href="https://twitter.com/share" class="twitter-share-button" data-url="abc" data-text="' + link + '#playhnc" data-count="none">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script> \
-             </div>');
-        $('#play_link').text('http://costam/' + geo.target.lat());
+        var url = location.href + '?lat=' + geo.target.lat() + '&lon=' + geo.target.lon();
+        $.get('http://api.bitly.com/v3/shorten?login=biesiad&apiKey=R_40292ebe9401d2a38f3ceb02d4b4b204&longUrl=' + url, function (data) { 
+            url = data.data.url || url;
+            $('#app').html(
+                '<div class="box"> \
+                   <p>Share this link with your friend and wish him luck :)</p> \
+                   <a href="" id="play_link"></a> \
+                   <a href="https://twitter.com/share" class="twitter-share-button" data-url="abc" data-text="' + url + ' #playhotncold" data-count="none">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script> \
+                 </div>');
+            $('#play_link').text(url);
+            $('#play_link').attr('href', url);
+        });
     }
 };
 
