@@ -22,6 +22,7 @@ var app = {
         return paramsObject;
     }
 };
+
 var home = {
     init: function () {
         var self = this;
@@ -141,7 +142,7 @@ var play = {
         play.isMoving();
     },
     isMoving: function () {
-        if (play.isMovingId) { clearTimeout(play.isMoving); }
+        if (play.isMovingId) { clearTimeout(play.isMovingId); }
         play.isMovingId = setTimeout(function () {
             $('#direction').text('Are you moving?').removeClass().addClass('stop');
             play.isMoving();
