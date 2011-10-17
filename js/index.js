@@ -40,12 +40,12 @@ var map = {
               <div id="map"> \
               </div> \
             </div> \
-            <a href="#" id="track" class="button">track</a>');
+            <a href="#share" id="share" class="button">share</a>');
 
         geo.getPosition(function (position) {
             self.initMap(position);
         });
-        $('#track').click(function () {
+        $('#share').click(function () {
             self.updateMarker(); 
             self.next();
             return false;
@@ -82,17 +82,20 @@ var map = {
 
 var share = {
     init: function () {
-        var url = location.href + '?lat=' + geo.target.lat() + '&lon=' + geo.target.lon();
-        $.get('http://api.bitly.com/v3/shorten?login=biesiad&apiKey=R_40292ebe9401d2a38f3ceb02d4b4b204&longUrl=' + url, function (data) { 
-            url = data.data.url || url;
+        var url = location.href.replace(location.hash, "") + '?lat=' + geo.target.lat() + '&lon=' + geo.target.lon();
+        $.get('http://api.bitly.com/v3/shorten?login=biesiad&apiKey=R_40292ebe9401d2a38f3ceb02d4b4b204&longUrl=' + encodeURIComponent(url) + '&format=json', function (data) { 
+            data = data.data ? data : JSON.parse(data);
+            console.log('data: ', data);
+            url = data["data"]["url"] || url;
             $('#app').html(
-                '<div class="box"> \
+                '<div class="share box"> \
                    <p>Share this link with your friend and wish him luck :)</p> \
-                   <a href="" id="play_link"></a> \
-                   <a href="https://twitter.com/share" class="twitter-share-button" data-url="abc" data-text="' + url + ' #playhotncold" data-count="none">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script> \
+                   <a href="' + url + '" id="play_link"></a> \
+                   <div class="social"> \
+                       <a href="https://twitter.com/share" class="twitter-share-button" data-url="abc" data-text="' + url + ' #playhotncold" data-count="none">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script> \
+                    </div> \
                  </div>');
-            $('#play_link').text(url);
-            $('#play_link').attr('href', url);
+            $('#play_link').html(url);
         });
     }
 };
