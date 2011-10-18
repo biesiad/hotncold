@@ -36,15 +36,13 @@ var home = {
 var map = {
     init: function () {
         var self = map;
-        $('#app').html(
-            '<div class="map box-input"> \
-              <div id="map"> \
-              </div> \
-            </div> \
-            <a href="#share" id="share" class="button">share</a>');
-
+        self.render();
+        self.map = $('#map');
         geo.getPosition(function (position) {
+            var mapWidth = self.map.width();
             self.initMap(position);
+            self.map.parent().height(mapWidth);
+            self.height(mapWidth);
         });
         $('#share').click(function () {
             self.updateMarker(); 
@@ -52,26 +50,25 @@ var map = {
             return false;
         });
     },
+    render: function () {
+        $('#app').html(
+            '<div class="map box-input"> \
+              <div id="map"> \
+              </div> \
+            </div> \
+            <a href="#share" id="share" class="button">share</a>');
+    },
     initMap: function (position) {
-        var mapWidth = $('#map').width();
-        $('#map').parent().height(mapWidth);
-        $('#map').height(mapWidth);
-        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        var myOptions = {
-                zoom: 16,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-        this.map = new google.maps.Map(document.getElementById("map"), myOptions);
-        var crosshairShape = {
-            coords:[0,0,20,20],
-            type:'rect'
-        };
-        var marker = new google.maps.Marker({
-            map: this.map,
-            icon: 'http://www.daftlogic.com/images/cross-hairs.gif',
-            shape: crosshairShape
-        });
+        var mapWidth = $('#map').width(),
+            latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+            myOptions = { zoom: 16, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP },
+            map = new google.maps.Map(document.getElementById("map"), myOptions),
+            crosshairShape = { coords:[0,0,20,20], type:'rect' },
+            marker = new google.maps.Marker({
+                map: this.map,
+                icon: 'http://www.daftlogic.com/images/cross-hairs.gif',
+                shape: crosshairShape
+            });
         marker.bindTo('position', this.map, 'center'); 
         google.maps.event.addListener(this.map, 'dragend', this.updateMarker);
     },

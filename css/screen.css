@@ -111,9 +111,6 @@ ol li {
     font-family: "Lobster", serif;
     font-size: 50px;
     display: block;
-/*    -webkit-text-shadow: 3px 3px 0 #DEDACB;
-    -moz-text-shadow: 3px 3px 0 #DEDACB;
-    text-shadow: 3px 3px 0 #DEDACB;*/
     -webkit-border-radius: 0 0 10px 10px !important;
     -moz-border-radius: 0 0 10px 10px !important;
     border-radius: 0 0 10px 10px !important;
