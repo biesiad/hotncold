@@ -4,13 +4,16 @@ body {
   font-size: 16px;
   background: url('../images/bg.jpg');
   background-color: #E2DDCA;
-  color: #B7B6B0;
+  color: #818181;
+/*   color: #B7B6B0; */
   padding-bottom: 40px;
 }
 
 a {
     text-decoration: none;
     color: #852F29; 
+    -webkit-text-shadow: 1px 1px 1px rgba(255, 255, 255, .2);
+    -moz-text-shadow: 1px 1px 1px rgba(255, 255, 255, .2);
     text-shadow: 1px 1px 1px rgba(255, 255, 255, .2);
     cursor: pointer;
 }
@@ -128,12 +131,16 @@ ol li {
 .info {
     margin-bottom: 30px;
     padding: 0 10px 20px;
-    color: #26A4BD;
+/*     color: #26A4BD; */
     line-height: 1.2em;
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
+    -webkit-text-shadow: 1px 1px 0px rgba(255, 255, 255, .7);
+    -moz-text-shadow: 1px 1px -px rgba(255, 255, 255, .7);
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, .7);
 }
 .info > img {
+    width: 70%;
     margin: 30px auto 20px;
     
 }
@@ -145,7 +152,7 @@ ol li {
   padding: 1em 1.5%;
 }
 .info .step > img {
-    width: 50%;
+    width: 80%;
     margin: 0 auto 1em;
 }
 
