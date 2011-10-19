@@ -12,7 +12,7 @@ var app = {
     loading: function () {
         $('#app').html(
             '<div class="loading"> \
-              <img src="images/loading.gif"> \
+              <img src="images/loading.gif" class="loading"> \
             </div>');
     }
 };
