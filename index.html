@@ -7,14 +7,24 @@
   <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen" charset="utf-8">
   <link href='http://fonts.googleapis.com/css?family=Lobster|Anton|Francois+One' rel='stylesheet' type='text/css'>
   <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-19997735-4']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </head>
 <body>
   <div class="top">
     <nav class="menu container">
       <ul>
-        <li><a href="index.html">home</a></li>
-        <li><a href="faq.html">faq</a></li>
-        <li><a href="https://github.com/biesiad/playhotncold">github</a></li>
+        <li><a href="#home">home</a></li>
+        <li><a href="#faq" id="faq">faq</a></li>
+        <li><a href="https://github.com/biesiad/hotncold">github</a></li>
         <li><a href="http://twitter.com/biesiad">twitter</a></li>
       </ul>
     </nav>
@@ -24,41 +34,11 @@
         <img src="images/logo.gif">
         <h1>Hot n'Cold</h1>
     </div>
-    <div id="app">
-      <div class="info box">
-        <ul>
-          <li class="step">
-              <img src="images/marker.png">
-              <p>mark secret spot position on a map</p>
-          </li>
-          <li class="step">
-              <img src="images/envelope.png">
-              <p>share game link with your friend</p>
-          </li>
-          <li class="step">
-              <img src="images/compass.png">
-              <p>Have a long break, until your friend finds the secret spot</p>
-          </li>
-        </ul>
-        <div style="clear: both;"></div>
-        <img src="images/iphone.jpg">
-      </div>
-      <a href="#map" id="start" class="button">start</a>
-    </div>
+    <div id="app"></div>
   </div>
+  <script src="js/lib/base64.js"></script>
   <script src="js/lib/latlon.js"></script>
   <script src="js/lib/jquery.min.js"></script>
-  <script src="js/index.js"></script>
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-19997735-4']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <script src="js/hotncold.js"></script>
 </body>
 </html>
