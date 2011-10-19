@@ -9,14 +9,6 @@ var app = {
         var view = location.hash ? location.hash.replace(/(^.*#|\/.*$)/g, "") : 'home';
         views[view].init();
     },
-    parseQuery: function (query) {
-        var params = query.replace(/[^=\d\.&\w]/g, "").split('&');
-        return params.reduce(function (r, e) {
-            var param = e.split("=");
-            r[param[0]] = param[1];
-            return r;
-        }, {});
-    },
     loading: function () {
         $('#app').html(
             '<div class="box"> \
