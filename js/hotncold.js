@@ -12,7 +12,7 @@ var app = {
     loading: function () {
         $('#app').html(
             '<div class="loading"> \
-              <img src="images/loading"> \
+              <img src="images/loading.gif"> \
             </div>');
     }
 };
@@ -190,10 +190,10 @@ views.faq = {
 
 views.error = {
     show: function (message) {
-    $('#app').html(
-        '<div class="box"> \
-            <h1>' + message + '</h1> \
-        </div>');
+        $('#app').html(
+            '<div class="error box"> \
+                <h1>' + message + '</h1> \
+            </div>');
     }
 };
 
@@ -203,9 +203,9 @@ var geo = {
         // clearing watch first
         if (navigator.geolocation) {
             if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
-            navigator.geolocation.getCurrentPosition(onPosition, this.onPositionChangeError, { enableHighAccuracy: true, maximumAge: 0 });
+            navigator.geolocation.getCurrentPosition(onPosition, this.onPositionError, { enableHighAccuracy: true, maximumAge: 0 });
         } else {
-            views.error.show('No geolocation, sorry...');
+            views.error.show('No geolocation available, sorry...');
         }
     },
     watchPosition: function(onPosition) {
@@ -213,14 +213,19 @@ var geo = {
             if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
             this.watchId = navigator.geolocation.watchPosition(onPosition, this.onPositionError, { enableHighAccuracy: true, maximumAge: 0 });
         } else {
-            views.error.show('No geolocation, sorry...');
+            views.error.show('No geolocation available, sorry...');
         }
     },
     clearWatch: function () {
         if (this.watchId) { navigator.geolocation.clearWatch(this.watchId); }
     },
-    onPositionError: function () {
-        views.error.show('Unable to find your localization...');
+    onPositionError: function (error) {
+        var errors = { 
+            1: 'Please allow this site to find your position first',
+            2: 'Position unavailable',
+            3: 'Request timeout'
+        };
+        views.error.show(errors[error.code]);
     }
 };
 
