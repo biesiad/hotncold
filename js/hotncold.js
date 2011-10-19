@@ -88,13 +88,13 @@ views.spot = {
     },
     updateMarker: function () {
         var position = this.map.getCenter();
-        this.share.attr('href', '#share/' + Base64.encode(position.lat() + '|' + position.lng()));
+        this.share.attr('href', '#share/' + btoa(position.lat() + '|' + position.lng()));
     }
 };
 
 views.share = {
     init: function () {
-        var data = Base64.decode(location.hash.replace('#share/', '')).split('|');
+        var data = atob(location.hash.replace('#share/', '')).split('|');
         this.target = new LatLon(data[0], data[1]);
         this.render();
     },
@@ -113,7 +113,7 @@ views.share = {
 
 views.play = {
     init: function () {
-        var data = Base64.decode(location.hash.replace('#play/', '')).split('|');
+        var data = atob(location.hash.replace('#play/', '')).split('|');
         this.target = new LatLon(data[0], data[1]);
         this.render();
     },
