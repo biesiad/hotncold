@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+  <title>Hot n' Cold</title>
+  <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width" />
+  <link rel="apple-touch-icon" href="images/favicon-touch.png" />
+  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/clearfix.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen" charset="utf-8">
+  <link href='http://fonts.googleapis.com/css?family=Lobster|Anton|Francois+One' rel='stylesheet' type='text/css'>
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-19997735-4']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta property="og:title" content="Hot n'Cold"/>
+  <meta property="og:type" content="game"/>
+  <meta property="og:url" content="http://playhotncold.com"/>
+  <meta property="og:site_name" content="Hot n'Cold - playing with geolocation"/>
+  <meta property="og:description"
+        content="With this tiny application, you can play Hot n'Cold game using your mobile browser. You need mobile phone with modern web browser and GPS module, and some uncovered area where you could play."/>
+</head>
+<body>
+  <div class="top">
+    <nav class="menu container">
+      <ul>
+        <li><a href="#home">home</a></li>
+        <li><a href="#faq" id="faq">faq</a></li>
+        <li><a href="https://github.com/biesiad/hotncold">github</a></li>
+        <li><a href="http://twitter.com/biesiad">twitter</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container">
+    <div class="logo box">
+        <img src="images/logo.gif">
+        <h1>Hot n'Cold</h1>
+    </div>
+    <div id="app"></div>
+  </div>
+  <script src="js/lib/base64.js"></script>
+  <script src="js/lib/latlon.js"></script>
+  <script src="js/lib/jquery.min.js"></script>
+  <script src="js/hotncold.js"></script>
+</body>
+</html>
