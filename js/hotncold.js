@@ -11,8 +11,8 @@ var app = {
     },
     loading: function () {
         $('#app').html(
-            '<div class="box"> \
-                <h1>loading</h1> \
+            '<div class="loading"> \
+              <img src="images/loading"> \
             </div>');
     }
 };
