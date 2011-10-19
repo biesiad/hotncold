@@ -2,7 +2,7 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
-  background: url('../images/bg.gif');
+  background: url('../images/bg.jpg');
   background-color: #E2DDCA;
   color: #B7B6B0;
   padding-bottom: 40px;
@@ -168,8 +168,10 @@ ol li {
     z-index: 0;
 }
 
+.error {
+}
 
-.compass {
+.compass, .error {
     padding: 20px;
     text-align: center;
 }
@@ -200,7 +202,7 @@ ol li {
 .compass #direction.stop { }
 .compass #direction.success { color: #ebb900; }
 
-.compass #to_target { font-size: 20px; }
+.compass #to_target, .error { font-size: 20px; }
 #accuracy { 
     margin: 5px 5px;
     font-size: 12px;
