@@ -224,6 +224,7 @@ ol li {
     -moz-border-radius: 7px;
     border-radius: 7px;
     margin: 20px 0 10px;
+    word-wrap: break-word;
 }
 
 .faq {
