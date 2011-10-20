@@ -94,8 +94,6 @@ views.spot = {
 
 views.share = {
     init: function () {
-        var data = atob(location.hash.replace('#share/', '')).split('|');
-        this.target = new LatLon(data[0], data[1]);
         this.render();
     },
     render: function () {
@@ -103,6 +101,8 @@ views.share = {
         $('#app').load('views/share.html', function () { self.onRender() });
     },
     onRender: function () {
+        var data = atob(location.hash.replace('#share/', '')).split('|');
+        this.target = new LatLon(data[0], data[1]);
         this.gameUrl = location.href.replace('share', 'play');
         this.playLink = $('#play_link');
         this.playLink.html(this.gameUrl);
@@ -231,5 +231,8 @@ var geo = {
 };
 
 $(function () {
+    window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
+        alert(errorMsg + ', ' + lineNumber);
+    }
     app.init();
 });
