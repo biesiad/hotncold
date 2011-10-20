@@ -23,23 +23,15 @@ views.home = {
         location.hash = "home";
         this.render();
     },
-    moveNext: function () {
-        views.spot.init();
-    },
     render: function () {
         var self = this;
-        $('#app').load('views/home.html', function () { self.onRender() });
+        $('#app').load('views/home.html');
     },
-    onRender: function (attribute) {
-        this.start = $('#start');
-        this.start.click(this.moveNext);
-    }
 };
 
 views.spot = {
     init: function () {
-        var self = this;
-        self.render();
+        this.render();
     },
     render: function () {
         var self = this;
@@ -54,12 +46,6 @@ views.spot = {
             self.updateMarker(); 
         });
         this.share = $('#share');
-        this.share.click(function () { self.moveNext(); });
-    },
-    moveNext: function () {
-        this.updateMarker(); 
-        views.share.init();
-        return false;
     },
     initMap: function (position) {
         var self = this, 
