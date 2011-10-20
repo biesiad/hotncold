@@ -216,8 +216,5 @@ var geo = {
 };
 
 $(function () {
-    window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-        alert(errorMsg + ', ' + lineNumber);
-    }
     app.init();
 });
