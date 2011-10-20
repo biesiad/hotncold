@@ -87,7 +87,7 @@ views.share = {
     },
     onRender: function () {
         var data = atob(location.hash.replace('#share/', '')).split('|');
-        this.target = new LatLon(data[0], data[1]);
+        this.target = { latitude: data[0], longitude: data[1] };
         this.gameUrl = location.href.replace('share', 'play');
         this.playLink = $('#play_link');
         this.playLink.html(this.gameUrl);
@@ -98,19 +98,53 @@ views.share = {
 
 views.play = {
     init: function () {
-        this.render();
+        var self = this,
+        data = atob(location.hash.replace('#play/', '')).split('|');
+        self.target = { latitude: data[0], longitude: data[1] };
+        localStorage.setItem('toTarget', 0);
+        geo.getPosition(function (position) {
+            self.startPosition = position.coords;
+            self.render();
+        });
     },
     render: function () {
         var self = this;
         $('#app').load('views/play.html', function () { self.onRender(); });
     },
     onRender: function () {
-        var data = atob(location.hash.replace('#play/', '')).split('|');
-        this.target = new LatLon(data[0], data[1]);
         this.direction = $('#direction');
         this.toTarget = $('#to_target');
         this.accuracy = $('#accuracy');
+        this.onPosition(this.startPosition);
         this.start();
+    },
+    start: function ()  {
+        var self = this;
+        geo.watchPosition(function (position) { self.onPosition(position.coords) });
+    },
+    stop: function () {
+        geo.clearWatch();
+        if (this.isMovingId) { clearTimeout(this.isMovingId); }
+        this.direction.text('You Are There!').removeClass().addClass('success');
+    },
+    onPosition: function (position) {
+        var toTarget = geo.distance(this.target.latitude, this.target.longitude, position.latitude, position.longitude),
+            toTargetDelta = toTarget - localStorage.getItem('toTarget');
+        
+        this.update({
+            toTarget: +toTarget,
+            toTargetDelta: +toTargetDelta,
+            accuracy: +position.accuracy
+        });
+        
+        // end game if toTarget < 10 meters
+        if (toTarget * 1000 < 10) {
+            this.stop();
+            return;
+        }
+        
+        localStorage.setItem('toTarget', toTarget);
+        this.checkIsMoving();
     },
     update: function (data) {
         if (data.toTargetDelta === 0) {
@@ -122,34 +156,6 @@ views.play = {
         }
         this.toTarget.html('<p>' + ~~(data.toTarget * 1000) + 'm to target</p>');
         this.accuracy.html('accuracy: ' + data.accuracy + 'm');
-    },
-    start: function ()  {
-        var self = this;
-        geo.watchPosition(function (position) { self.onPosition(position.coords) });
-    },
-    stop: function () {
-        geo.clearWatch();
-        if (play.isMovingId) { clearTimeout(play.isMoving); }
-        this.direction.text('You Are There!').removeClass().addClass('success');
-    },
-    onPosition: function (position) {
-        var currentPosition = new LatLon(position.latitude, position.longitude),
-            toTarget = this.target.distanceTo(currentPosition, 10),
-            toTargetDelta = localStorage.getItem('toTarget') ? (toTarget - localStorage.getItem('toTarget')) : 0;
-        
-        // end game if toTarget < 10 meters
-        if (this.distanceToTarget * 1000 < 10) {
-            this.stop();
-            return;
-        }
-        this.update({
-            toTarget: +toTarget,
-            toTargetDelta: +toTargetDelta,
-            accuracy: +position.accuracy
-        });
-        localStorage.setItem('toTarget', toTarget);
-        
-        this.checkIsMoving();
     },
     checkIsMoving: function () {
         // if this.onPosition not called for 10 seconds
@@ -211,6 +217,23 @@ var geo = {
             3: 'Request timeout'
         };
         views.error.show(errors[error.code]);
+    },
+    distance: function(x1, y1, x2, y2) {
+        var r = 6371,
+           i;
+           
+        for(i in arguments) {
+           if(arguments.hasOwnProperty(i)) {
+               arguments[i] = Math.PI * arguments[i] / 180;
+           }
+        }
+
+        return r * Math.sqrt(
+            2 - 2 * (
+            Math.cos(x1)*Math.cos(x2)*Math.cos(y1-y2) +
+                (Math.sin(x1) * Math.sin(x2))
+            )
+        );
     }
 };
 
