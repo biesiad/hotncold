@@ -113,8 +113,6 @@ views.share = {
 
 views.play = {
     init: function () {
-        var data = atob(location.hash.replace('#play/', '')).split('|');
-        this.target = new LatLon(data[0], data[1]);
         this.render();
     },
     render: function () {
@@ -122,12 +120,15 @@ views.play = {
         $('#app').load('views/play.html', function () { self.onRender(); });
     },
     onRender: function () {
+        var data = atob(location.hash.replace('#play/', '')).split('|');
+        this.target = new LatLon(data[0], data[1]);
         this.direction = $('#direction');
         this.toTarget = $('#to_target');
         this.accuracy = $('#accuracy');
         this.start();
     },
     update: function (data) {
+        console.log('update: ' + data);
         if (data.toTargetDelta === 0) {
             this.direction.text('Are you moving?').removeClass().addClass('stop');
         } else if (data.toTargetDelta > 0) {
