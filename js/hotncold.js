@@ -113,7 +113,6 @@ views.play = {
         this.start();
     },
     update: function (data) {
-        console.log('update: ' + data);
         if (data.toTargetDelta === 0) {
             this.direction.text('Are you moving?').removeClass().addClass('stop');
         } else if (data.toTargetDelta > 0) {
@@ -136,7 +135,7 @@ views.play = {
     onPosition: function (position) {
         var currentPosition = new LatLon(position.latitude, position.longitude),
             toTarget = this.target.distanceTo(currentPosition, 10),
-            toTargetDelta = localStorage.getItem('toTarget') ? (toTarget - localStorage.getItem('ToTarget')) : 0;
+            toTargetDelta = localStorage.getItem('toTarget') ? (toTarget - localStorage.getItem('toTarget')) : 0;
         
         // end game if toTarget < 10 meters
         if (this.distanceToTarget * 1000 < 10) {
@@ -144,11 +143,11 @@ views.play = {
             return;
         }
         this.update({
-            toTarget: toTarget,
-            toTargetDelta: toTargetDelta,
-            accuracy: position.accuracy
+            toTarget: +toTarget,
+            toTargetDelta: +toTargetDelta,
+            accuracy: +position.accuracy
         });
-        localStorage.setItem('distanceToTarget', this.distanceToTarget);
+        localStorage.setItem('toTarget', toTarget);
         
         this.checkIsMoving();
     },
