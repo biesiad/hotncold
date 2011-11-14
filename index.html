@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:og="http://ogp.me/ns#"
-      xmlns:fb="http://www.facebook.com/2008/fbml">
+      xmlns:fb="http://www.facebook.com/2008/fbml"
+      itemscope itemtype="http://schema.org/Product">
 <head>
   <title>Hot n' Cold</title>
   <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width" />
@@ -21,12 +22,18 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
   </script>
-  <meta property="og:title" content="Hot n'Cold"/>
+
+  <!-- Facebook -->
+  <meta property="og:title" content="Hot'n'Cold game"/>
   <meta property="og:type" content="game"/>
   <meta property="og:url" content="http://playhotncold.com"/>
   <meta property="og:site_name" content="Hot n'Cold - playing with geolocation"/>
-  <meta property="og:description"
-        content="With this tiny application, you can play Hot n'Cold game using your mobile browser. You need mobile phone with modern web browser and GPS module, and some uncovered area where you could play."/>
+  <meta property="og:description" content="With this tiny application, you can play Hot n'Cold game using your mobile browser. You need mobile phone with modern web browser and GPS module, and some uncovered area where you could play."/>
+
+  <!-- Google+ -->
+  <meta itemprop="name" content="Hot and Cold Game">
+  <meta itemprop="description" content="With this tiny application, you can play Hot and Cold game using your mobile browser. You need mobile phone with modern web browser and GPS module, and some uncovered area where you could play.">
+  <meta itemprop="image" content="http://playhotncold.com/images/iphone.png">
 </head>
 <body>
   <div class="top">
@@ -46,6 +53,23 @@
     </div>
     <div id="app"></div>
   </div>
+
+  <div id="fb-root"></div>
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/pl_PL/all.js#xfbml=1&appId=129235213827293";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    (function() {
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+      po.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+  </script>
   <script src="js/lib/jquery.min.js"></script>
   <script src="js/hotncold.js"></script>
 </body>

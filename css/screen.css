@@ -130,8 +130,7 @@ ol li {
 
 .info {
     margin-bottom: 30px;
-    padding: 0 10px 20px;
-/*     color: #26A4BD; */
+    padding: 0 20px 20px;
     line-height: 1.2em;
     font-size: 14px;
     text-align: center;
@@ -264,4 +263,14 @@ ol li {
 .loading {
     margin-top: 70px;
     text-align: center;
+}
+
+.social {
+    text-align: left;
+    margin-top: 20px;
+}
+.social > .fb-like,
+.social > .fb-send {
+    top: -3px;
+    min-width: 130px;
 }
