@@ -91,7 +91,7 @@ views.share = {
         this.gameUrl = location.href.replace('share', 'play');
         this.playLink = $('#play_link');
         this.playLink.html(this.gameUrl);
-        this.playLink.attr('href', this.gameUrl);
+        this.playLink.attr('href', encodeURIComponent(this.gameUrl));
 
         var text = "Play Hot'n'Cold: " + this.gameUrl + ' #playhotncold';
         $('.twitter-share-button').attr('data-text', text);
