@@ -5,6 +5,10 @@ var app = {
     },
     routing: function () {
         app.loading();
+        if (location.getParameter("fb_ref")) {
+            var hash = location.getParameter('fb_ref');
+            location.href = location.href.replace(/\?.*$/, '#' + hash);
+        }
         var view = location.hash ? location.hash.replace(/(^.*#|\/.*$)/g, "") : 'home';
         views[view].init();
     },
@@ -96,6 +100,7 @@ views.share = {
         var text = "Play Hot'n'Cold: " + this.gameUrl + ' #playhotncold';
         $('.twitter-share-button').attr('data-text', text);
         $('.fb-send').attr('data-href', encodeURIComponent(this.gameUrl));
+        $('.fb-send').attr('ref', location.hash.replace('share', 'play'));
     }
 };
 
