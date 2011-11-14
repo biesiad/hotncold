@@ -101,6 +101,7 @@ views.share = {
         $('.twitter-share-button').attr('data-text', text);
         $('.fb-send').attr('data-href', encodeURIComponent(this.gameUrl));
         $('.fb-send').attr('ref', location.hash.replace('share', 'play'));
+        FB.XFBML.parse();
     }
 };
 
