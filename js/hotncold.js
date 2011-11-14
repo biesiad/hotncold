@@ -5,10 +5,6 @@ var app = {
     },
     routing: function () {
         app.loading();
-        if (location.getParameter("fb_ref")) {
-            var hash = location.getParameter('fb_ref');
-            location.href = location.href.replace(/\?.*$/, '#' + hash);
-        }
         var view = location.hash ? location.hash.replace(/(^.*#|\/.*$)/g, "") : 'home';
         views[view].init();
     },
