@@ -95,7 +95,7 @@ views.share = {
 
         var text = "Play Hot'n'Cold: " + this.gameUrl + ' #playhotncold';
         $('.twitter-share-button').attr('data-text', text);
-        $('.fb-send').attr('data-href', text);
+        $('.fb-send').attr('data-href', this.gameUrl);
     }
 };
 
