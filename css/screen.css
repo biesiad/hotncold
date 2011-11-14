@@ -270,7 +270,5 @@ ol li {
     margin-top: 20px;
 }
 .social > .fb-like,
-.social > .fb-send {
-    top: -3px;
-    min-width: 130px;
-}
+.social > .fb-send { top: -4px; }
+.social > .fb-like { min-width: 130px; }
