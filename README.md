@@ -1,4 +1,4 @@
-Hot n'Cold game
+Hot'n'Cold game
 ===========
 
 What is it all about?
@@ -24,4 +24,4 @@ Sure, catch me on twitter and let's think about come cool extensions.
 
 I have privacy concerns.. Is it safe?
 -------------------------------------
-Don't worry, the only trace you leave is shortened game link containing secret spot position. I'm not going to share it with anyone.
+Yes, it's save. I'm not tracking you or gathering any information except Google Analitycs trafic data.
