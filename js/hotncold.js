@@ -165,7 +165,7 @@ views.play = {
         this.isMovingId = setTimeout(function () {
             self.direction.text('Are you moving?').removeClass().addClass('stop');
             self.checkIsMoving();
-        }, 5*1000);
+        }, 10*1000);
     },
 };
 
