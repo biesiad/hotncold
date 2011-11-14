@@ -3,7 +3,7 @@ Hot'n'Cold game
 
 What is it all about?
 ---------------------
-With this tiny application, you can play <a href="http://www.parentsconnect.com/parenting-your-kids/activities/games/its_getting_hot_in_here.html">Hot n' Cold</a> game using your mobile browser. You need mobile phone with modern web browser and GPS module, and some uncovered area where you could play.
+With this tiny application, you can play <a href="http://www.parentsconnect.com/parenting-your-kids/activities/games/its_getting_hot_in_here.html">Hot'n'Cold</a> game using your mobile browser. You need mobile phone with modern web browser and GPS module, and some uncovered area where you could play.
 
  - Create new game
  - Set the secret spot
