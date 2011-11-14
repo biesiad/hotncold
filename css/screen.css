@@ -221,6 +221,7 @@ ol li {
 
 .share {
     padding: 20px;
+    margin-bottom: 20px;
 }
 .share #play_link {
     display: block;
@@ -271,4 +272,4 @@ ol li {
 }
 .social > .fb-like,
 .social > .fb-send { top: -4px; }
-.social > .fb-like { min-width: 130px; }
+.social > .fb-like { min-width: 110px; }
