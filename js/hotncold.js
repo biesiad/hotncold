@@ -96,12 +96,6 @@ views.share = {
         this.playLink = $('#play_link');
         this.playLink.html(this.gameUrl);
         this.playLink.attr('href', encodeURIComponent(this.gameUrl));
-
-        var text = "Play Hot'n'Cold: " + this.gameUrl + ' #playhotncold';
-        $('.twitter-share-button').attr('data-text', text);
-        $('.fb-send').attr('data-href', encodeURIComponent(this.gameUrl));
-        $('.fb-send').attr('ref', location.hash.replace('share', 'play'));
-        FB.XFBML.parse();
     }
 };
 
