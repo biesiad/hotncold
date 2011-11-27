@@ -91,7 +91,7 @@ views.share = {
         this.gameUrl = location.href.replace('share', 'play');
         this.playLink = $('#play_link');
         this.playLink.html(this.gameUrl);
-        this.playLink.attr('href', encodeURIComponent(this.gameUrl));
+        this.playLink.attr('href', this.gameUrl);
     }
 };
 
